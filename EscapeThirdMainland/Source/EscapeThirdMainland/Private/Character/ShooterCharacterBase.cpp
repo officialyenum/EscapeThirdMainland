@@ -48,6 +48,11 @@ AShooterCharacterBase::AShooterCharacterBase()
 void AShooterCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	check(GEngine != nullptr);
+
+	// Display a debug message for five seconds. 
+	// The -1 "Key" value argument prevents the message from being updated or refreshed.
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("We are using FPSCharacter."));
 	GunMesh->AttachToComponent(HandsMesh, FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("GripPoint"));
 	
 }
@@ -63,6 +68,11 @@ void AShooterCharacterBase::Tick(float DeltaTime)
 void AShooterCharacterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	//PlayerInputComponent->Bind("Jump", IE_Pressed, this, &ACharacter::Jump);
+
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &AShooterCharacterBase::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AShooterCharacterBase::MoveRight);
 
 }
 
@@ -72,10 +82,16 @@ void AShooterCharacterBase::OnFire()
 
 void AShooterCharacterBase::MoveForward(float Value)
 {
+	// Find out which way is "forward" and record that the player wants to move that way.
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+	AddMovementInput(Direction, Value);
 }
 
 void AShooterCharacterBase::MoveRight(float Value)
 {
+	// Find out which way is "right" and record that the player wants to move that way.
+	FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+	AddMovementInput(Direction, Value);
 }
 
 void AShooterCharacterBase::TurnAtRate(float Rate)
