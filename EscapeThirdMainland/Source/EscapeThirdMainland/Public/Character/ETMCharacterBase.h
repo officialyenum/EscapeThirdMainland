@@ -6,8 +6,6 @@
 #include "GameFramework/Character.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Components/SkeletalMeshComponent.h"
-#include "Components/InputComponent.h"
 #include "ETMCharacterBase.generated.h"
 
 UCLASS()
@@ -18,10 +16,6 @@ class ESCAPETHIRDMAINLAND_API AETMCharacterBase : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AETMCharacterBase();
-
-	// First-person mesh (arms), visible only to the owning player.
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
-		USkeletalMeshComponent* FPSMesh;
 
 protected:
 	// Called when the game starts or when spawned
@@ -57,4 +51,9 @@ protected:
 	// FPS camera.
 	UPROPERTY(VisibleAnywhere)
 		UCameraComponent* FPSCameraComponent;
+
+
+	// First-person mesh (arms), visible only to the owning player.
+	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+		USkeletalMeshComponent* FPSMesh;
 };
